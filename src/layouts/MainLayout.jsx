@@ -5,7 +5,7 @@ import PostTweet from "../pages/PostTweet";
 
 const MainLayout = () => {
   return (
-    <div className="flex flex-row min-h-screen max-w-[1200px] mx-auto border-2 border-red-500">
+    <div className="flex flex-row min-h-screen max-w-[1200px] mx-auto">
       <Navbar />
       <main className="border-x-2 border-primary w-full">
         <Outlet />

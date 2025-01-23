@@ -16,4 +16,7 @@ textarea {
   .nav-link {
     @apply text-[22px] font-bold flex gap-x-4 items-center px-10;
   }
+  .profile-image-small {
+    @apply rounded-full object-cover w-[55px] h-[55px] border;
+  }
 }

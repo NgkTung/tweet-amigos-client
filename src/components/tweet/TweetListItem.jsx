@@ -1,44 +1,53 @@
 import PropTypes from "prop-types";
-
-// Icons
-import { BiMessageRounded } from "react-icons/bi";
-import { FaRetweet } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
-import { RiShare2Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import TweetButtons from "./TweetButtons";
 
 const TweetListItem = ({ tweet }) => {
-  console.log("tweet: ", tweet);
   const { profile_image_url, username, email } = tweet.user;
 
+  const navigate = useNavigate();
+
+  const openTweetDetail = () => {
+    navigate(`/tweets/${tweet.id}`);
+  };
+
+  const renderTextWithLineBreaks = (text) => {
+    // Replace \r\n or \n with <br />
+    return text.split(/\r?\n/).map((item, index) => (
+      <span key={index}>
+        {item}
+        <br />
+      </span>
+    ));
+  };
+
   return (
-    <div className="flex py-2 border-b border-gray-500">
-      <div className="px-4">
-        <img
-          src={profile_image_url}
-          className="rounded-full object-cover w-[60px] h-[50px]"
-        />
-      </div>
-      <div className="w-full">
-        <p>
-          <span className="font-bold mb-2">{username}</span>{" "}
-          <span className="font-semibold text-gray-500">{email}</span>
-        </p>
-        <p>{tweet.content}</p>
-        <div className="flex w-9/12 justify-between items-center mt-5">
-          <button className="flex items-center">
-            <BiMessageRounded size={20} /> <span className="ms-1">3</span>
-          </button>
-          <button className="flex items-center">
-            <FaRetweet size={20} /> <span className="ms-1">1.6k</span>
-          </button>
-          <button className="flex items-center">
-            <FaRegHeart size={20} /> <span className="ms-1">3.5k</span>
-          </button>
-          <button>
-            <RiShare2Fill size={20} />
-          </button>
+    <div className="border-b">
+      <div
+        className="flex py-4 px-4  hover:bg-slate-50 cursor-pointer"
+        onClick={openTweetDetail}
+      >
+        <div className="w-1/6">
+          <img
+            src={profile_image_url}
+            alt="profile image avatar"
+            className="profile-image-small"
+          />
+        </div>
+        <div className="w-full">
+          <p className="mb-2">
+            <span className="font-bold">{username}</span>{" "}
+            <span className="font-semibold text-gray-500">{email}</span>
+          </p>
+          <p>{renderTextWithLineBreaks(tweet.content)}</p>
+          {tweet.image_url && (
+            <div className="w-full mt-5">
+              <img src={tweet.image_url} alt="tweet image" />
+            </div>
+          )}
         </div>
       </div>
+      <TweetButtons />
     </div>
   );
 };
@@ -51,6 +60,8 @@ TweetListItem.propTypes = {
       email: PropTypes.string.isRequired,
     }),
     content: PropTypes.string.isRequired,
+    image_url: PropTypes.string,
+    id: PropTypes.number,
   }).isRequired,
 };
 

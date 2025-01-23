@@ -1,33 +1,28 @@
 import TextEditor from "../components/TextEditor";
-import axios from "axios";
 import { useStore } from "../store";
-
-const API_URL = import.meta.env.API_URL;
 
 const PostTweet = () => {
   const { showTextEditor, setShowTextEditor } = useStore();
-  const handlePostTweet = async (formData) => {
-    try {
-      console.log(API_URL);
-      const response = await axios.post(
-        `http://127.0.0.1:8000/tweets`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      if (response) {
-        setShowTextEditor();
-      }
-    } catch (error) {
-      console.error(
-        "Error creating tweet: ",
-        error.response?.data || error.message
-      );
-    }
-  };
 
-  return <>{showTextEditor && <TextEditor onSubmit={handlePostTweet} />}</>;
+  return (
+    <>
+      {showTextEditor && (
+        <div
+          className="absolute top-0 left-0 right-0 bottom-0 bg-black bg-opacity-60 flex justify-center"
+          onClick={setShowTextEditor}
+        >
+          <div className="w-full flex justify-center mt-20">
+            <div
+              className="bg-white rounded-lg w-full max-w-[650px] relative self-start max-h-[90%] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <TextEditor />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default PostTweet;

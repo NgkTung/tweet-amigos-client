@@ -4,8 +4,8 @@ import TweetListItem from "./TweetListItem";
 
 const TweetList = () => {
   const fetchTweets = async () => {
-    const response = await getTweets();
-    return response;
+    const data = await getTweets();
+    return data;
   };
   const {
     data: tweets,
@@ -19,8 +19,6 @@ const TweetList = () => {
       refetchOnWindowFocus: true,
     },
   });
-
-  console.log("Data: ", tweets);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
