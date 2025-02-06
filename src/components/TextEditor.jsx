@@ -3,11 +3,12 @@ import { FaSmile } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
 import EmojiPicker from "emoji-picker-react";
-import { createTweet } from "../api";
+import { createTweet } from "../api/tweet";
 import { useStore } from "../store";
+import { toast } from "react-toastify";
 
 const TextEditor = () => {
-  const { showTextEditor, setShowTextEditor } = useStore();
+  const { showTextEditor, setShowTextEditor, user } = useStore();
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -31,7 +32,7 @@ const TextEditor = () => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("content", content);
-    formData.append("user_id", 5);
+    formData.append("user_id", user.id);
     if (image) {
       formData.append("image", image);
     }
@@ -40,9 +41,11 @@ const TextEditor = () => {
       const data = await createTweet(formData);
       if (data) {
         setContent("");
+        setImage(null);
         if (showTextEditor === true) {
           setShowTextEditor();
         }
+        toast.success("Tweet created");
       }
     } catch (error) {
       console.log(error.message);
@@ -53,11 +56,13 @@ const TextEditor = () => {
     <div className="px-4 py-6">
       <div className="flex">
         <div className="w-1/6">
-          <img
-            src="https://i.pinimg.com/736x/28/a2/83/28a2833ecb6a0766243329f4f44f2b8d.jpg"
-            alt="profile image avatar"
-            className="profile-image-small"
-          />
+          {user !== undefined && (
+            <img
+              src={user.profile_image_url}
+              alt="profile image avatar"
+              className="profile-image-small"
+            />
+          )}
         </div>
         <textarea
           value={content}

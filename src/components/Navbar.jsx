@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { MdHome } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
+import { VscSignOut } from "react-icons/vsc";
 import logo from "../assets/main-logo.png";
 import { useStore } from "../store";
 
@@ -47,6 +48,12 @@ const Navbar = () => {
             <FaUserCircle /> Profile
           </NavLink>
         </p>
+        <p>
+          <NavLink to="/logout" className="nav-link mt-5 text-red-500">
+            <VscSignOut /> Log out
+          </NavLink>
+        </p>
+
         <button
           className="bg-primary text-white text-[20px] font-bold rounded-full py-3 mx-10 my-5 hover:brightness-125 transition-all"
           onClick={setShowTextEditor}

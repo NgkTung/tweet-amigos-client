@@ -1,10 +1,15 @@
 import { useParams } from "react-router-dom";
-import { getTweetById } from "../api";
+import { getTweetById } from "../api/tweet";
 import { useQuery } from "@tanstack/react-query";
 import TweetButtons from "../components/tweet/TweetButtons";
+import { useStore } from "../store";
+import RetweetList from "../components/tweet/RetweetList";
+import Loading from "../components/Loading";
+import ReplyingTo from "../components/tweet/ReplyingTo";
 
 const TweetDetail = () => {
   const { id } = useParams();
+  const { user } = useStore();
 
   const renderTextWithLineBreaks = (text) => {
     // Replace \r\n or \n with <br />
@@ -17,7 +22,7 @@ const TweetDetail = () => {
   };
 
   const fetchTweet = async () => {
-    const data = await getTweetById(id);
+    const data = await getTweetById(id, user?.id);
     return data;
   };
 
@@ -26,18 +31,17 @@ const TweetDetail = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["tweet"],
+    queryKey: ["tweet", id, user.id],
     queryFn: fetchTweet,
+    enabled: !!id,
     options: {
       staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: true,
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
-
-  console.log(tweet);
 
   return (
     <div>
@@ -55,6 +59,9 @@ const TweetDetail = () => {
             <p className="text-gray-500">{tweet.user.email}</p>
           </div>
         </div>
+        {tweet.retweet_id && (
+          <ReplyingTo retweetId={tweet.retweet_id} email={tweet.reply_to} />
+        )}
         <div>{renderTextWithLineBreaks(tweet.content)}</div>
         {tweet.image_url && (
           <img
@@ -65,8 +72,14 @@ const TweetDetail = () => {
         )}
       </div>
       <div className="border-t border-b mx-4">
-        <TweetButtons />
+        <TweetButtons
+          tweetId={tweet.id}
+          isLiked={tweet.is_liked}
+          retweetCount={tweet.retweet_count}
+          likesCount={tweet.likes_count}
+        />
       </div>
+      <RetweetList tweetId={tweet.id} />
     </div>
   );
 };

@@ -5,11 +5,15 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import TweetDetail from "../pages/TweetDetail";
+import PrivateRoute from "./PrivateRoute";
+import LoginPage from "../pages/authentication/LoginPage";
+import LogoutPage from "../pages/authentication/LogoutPage";
+import RegisterPage from "../pages/authentication/RegisterPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <PrivateRoute element={<MainLayout />} />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -29,6 +33,21 @@ const router = createBrowserRouter([
         element: <TweetDetail />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/logout",
+    element: <LogoutPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
