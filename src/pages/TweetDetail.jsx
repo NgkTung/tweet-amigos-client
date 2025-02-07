@@ -6,10 +6,14 @@ import { useStore } from "../store";
 import RetweetList from "../components/tweet/RetweetList";
 import Loading from "../components/Loading";
 import ReplyingTo from "../components/tweet/ReplyingTo";
+import TextEditor from "../components/TextEditor";
+import { useState } from "react";
 
 const TweetDetail = () => {
   const { id } = useParams();
   const { user } = useStore();
+
+  const [openReply, setOpenReply] = useState(false);
 
   const renderTextWithLineBreaks = (text) => {
     // Replace \r\n or \n with <br />
@@ -79,6 +83,25 @@ const TweetDetail = () => {
           likesCount={tweet.likes_count}
         />
       </div>
+      {openReply === true ? (
+        <TextEditor retweetId={tweet.id} email={tweet.user.email} />
+      ) : (
+        <div className="flex justify-between mx-4 py-4 border-b">
+          <div>
+            <img
+              src={user.profile_image_url}
+              alt={`avatar-${user.username}`}
+              className="profile-image-small"
+            />
+          </div>
+          <button
+            className="bg-primary text-white text-[14x] font-bold rounded-full py-1 px-5 hover:brightness-125 transition-all"
+            onClick={() => setOpenReply(true)}
+          >
+            Reply
+          </button>
+        </div>
+      )}
       <RetweetList tweetId={tweet.id} />
     </div>
   );

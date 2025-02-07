@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSmile } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
@@ -6,8 +6,9 @@ import EmojiPicker from "emoji-picker-react";
 import { createTweet } from "../api/tweet";
 import { useStore } from "../store";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types";
 
-const TextEditor = () => {
+const TextEditor = ({ retweetId, email }) => {
   const { showTextEditor, setShowTextEditor, user } = useStore();
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -64,13 +65,22 @@ const TextEditor = () => {
             />
           )}
         </div>
-        <textarea
-          value={content}
-          onChange={handleTextChange}
-          placeholder="What's happening?"
-          className="text-[18px] w-full focus:outline-none whitespace-pre-wrap"
-          rows={4}
-        ></textarea>
+        <div className="flex flex-col space-y-4">
+          {retweetId && email && (
+            <p className="text-gray-400">
+              Replying to{" "}
+              <span className="text-blue-500 font-bold">{email}</span>
+            </p>
+          )}
+
+          <textarea
+            value={content}
+            onChange={handleTextChange}
+            placeholder="What's happening?"
+            className="text-[18px] w-full focus:outline-none whitespace-pre-wrap"
+            rows={4}
+          ></textarea>
+        </div>
       </div>
       {imagePreview && (
         <div className="relative">
@@ -121,6 +131,11 @@ const TextEditor = () => {
       )}
     </div>
   );
+};
+
+Text.propTypes = {
+  retweetId: PropTypes.string,
+  email: PropTypes.string,
 };
 
 export default TextEditor;

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getTweets } from "../../api/tweet";
 import TweetListItem from "./TweetListItem";
 import { useStore } from "../../store";
+import Loading from "../Loading";
 
 const TweetList = () => {
   const { user } = useStore();
@@ -24,7 +25,7 @@ const TweetList = () => {
     },
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
   return (
     <div>

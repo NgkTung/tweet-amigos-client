@@ -4,13 +4,21 @@ import { BiMessageRounded } from "react-icons/bi";
 import { FaRetweet } from "react-icons/fa";
 import { RiShare2Fill } from "react-icons/ri";
 import LikeButton from "../LikeButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TweetButtons = ({ tweetId, isLiked, retweetCount, likesCount }) => {
   const [statusCount, setStatusCount] = useState({
     retweetCount: retweetCount,
     likesCount: likesCount,
   });
+
+  useEffect(() => {
+    setStatusCount({
+      retweetCount: retweetCount,
+      likesCount: likesCount,
+    });
+  }, [retweetCount, likesCount]);
+
   return (
     <div className="flex w-full justify-start items-center mt-5 space-x-24 px-8 pb-4">
       <button className="flex items-center">
