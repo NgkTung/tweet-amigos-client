@@ -65,4 +65,7 @@ textarea {
   .profile-image-small {
     @apply rounded-full object-cover w-[55px] h-[55px] border;
   }
+  .profile-image-large {
+    @apply rounded-full object-cover w-[140px] h-[140px] border-4 border-white;
+  }
 }

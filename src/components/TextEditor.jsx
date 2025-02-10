@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaSmile } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
@@ -34,6 +34,9 @@ const TextEditor = ({ retweetId, email }) => {
     const formData = new FormData();
     formData.append("content", content);
     formData.append("user_id", user.id);
+    if (retweetId) {
+      formData.append("retweet_id", retweetId);
+    }
     if (image) {
       formData.append("image", image);
     }
@@ -44,7 +47,7 @@ const TextEditor = ({ retweetId, email }) => {
         setContent("");
         setImage(null);
         if (showTextEditor === true) {
-          setShowTextEditor();
+          setShowTextEditor(false);
         }
         toast.success("Tweet created");
       }
@@ -133,7 +136,7 @@ const TextEditor = ({ retweetId, email }) => {
   );
 };
 
-Text.propTypes = {
+TextEditor.propTypes = {
   retweetId: PropTypes.string,
   email: PropTypes.string,
 };

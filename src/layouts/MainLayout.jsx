@@ -29,10 +29,13 @@ const MainLayout = () => {
   });
 
   useEffect(() => {
-    if (user) {
+    if (error) {
+      localStorage.removeItem("accessToken");
+      location.reload();
+    } else if (user) {
       setUser(user);
     }
-  }, [user, setUser]);
+  }, [user, setUser, error]);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;

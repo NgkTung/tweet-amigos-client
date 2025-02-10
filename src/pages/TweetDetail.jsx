@@ -60,7 +60,7 @@ const TweetDetail = () => {
           </div>
           <div className="w-full">
             <p className="font-bold text-[18px]">{tweet.user.username}</p>
-            <p className="text-gray-500">{tweet.user.email}</p>
+            <p className="text-gray-500 font-semibold">{tweet.user.email}</p>
           </div>
         </div>
         {tweet.retweet_id && (
@@ -84,9 +84,17 @@ const TweetDetail = () => {
         />
       </div>
       {openReply === true ? (
-        <TextEditor retweetId={tweet.id} email={tweet.user.email} />
+        <div className="flex justify-end flex-col w-full">
+          <TextEditor retweetId={tweet.id} email={tweet.user.email} />
+          <button
+            className="px-4 font-semibold text-red-500 underline self-end"
+            onClick={() => setOpenReply(false)}
+          >
+            Cancel
+          </button>
+        </div>
       ) : (
-        <div className="flex justify-between mx-4 py-4 border-b">
+        <div className="flex justify-between mx-4 py-6 border-b">
           <div>
             <img
               src={user.profile_image_url}
@@ -95,7 +103,7 @@ const TweetDetail = () => {
             />
           </div>
           <button
-            className="bg-primary text-white text-[14x] font-bold rounded-full py-1 px-5 hover:brightness-125 transition-all"
+            className="bg-primary text-white text-[14x] font-bold rounded-full px-5 hover:brightness-125 transition-all"
             onClick={() => setOpenReply(true)}
           >
             Reply
