@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import SearchBar from "../components/SearchBar";
+import Sidebar from "../components/Sidebar";
 import PostTweet from "../pages/PostTweet";
 import { getUser } from "../api/user";
 import { useStore } from "../store";
@@ -49,7 +49,7 @@ const MainLayout = () => {
         <Outlet />
         <PostTweet />
       </main>
-      <SearchBar />
+      <Sidebar />
     </div>
   );
 };

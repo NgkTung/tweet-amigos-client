@@ -3,6 +3,11 @@ import config from "../../config";
 
 const { API_URL } = config;
 
+export const getUsers = async () => {
+  const response = await axios.get(`${API_URL}/users`);
+  return response.data;
+};
+
 export const getUser = async () => {
   const accessToken = localStorage.getItem("accessToken");
   const response = await axios.post(

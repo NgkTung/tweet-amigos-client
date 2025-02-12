@@ -38,7 +38,7 @@ const RetweetList = ({ tweetId }) => {
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
-    <div>
+    <div className="mb-20">
       {!retweetsResponse || retweetsResponse.data.length === 0 ? (
         <p className="text-center text-[20px] my-10 text-gray-400 font-bold tracking-wider flex items-center justify-center">
           <BiMessageRounded className="me-3" size={30} /> There are no comment

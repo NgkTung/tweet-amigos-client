@@ -3,7 +3,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useQuery } from "@tanstack/react-query";
 import { getUserById } from "../api/user";
 import Loading from "../components/Loading";
-import { useEffect } from "react";
 
 const ProfileDetail = () => {
   const { id } = useParams();
