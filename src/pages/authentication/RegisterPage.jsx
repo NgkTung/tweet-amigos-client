@@ -5,10 +5,17 @@ import { TextField } from "@mui/material";
 import logo from "../../assets/main-logo.png";
 import constant from "../../constants";
 import { toast } from "react-toastify";
+import Loading from "../../components/Loading";
 
 const RegisterPage = () => {
   const EMAIL_REGEX = constant.emailRegex;
-  const { mutate: register, isLoading, isSuccess, error } = useSignup();
+  const {
+    mutate: register,
+    isLoading,
+    isPending,
+    isSuccess,
+    error,
+  } = useSignup();
   const [helperText, setHelperText] = useState({
     email: "",
     username: "",
@@ -88,10 +95,13 @@ const RegisterPage = () => {
     }
   }, [isSuccess]);
 
-  if (isLoading) return <p>Loading...</p>;
-
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen relative">
+      {(isLoading || isPending) && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-50 flex items-center justify-center z-50">
+          <Loading type="spinningBubbles" />
+        </div>
+      )}
       <div className="flex flex-col items-center max-w-[600px] py-20 w-full shadow-lg rounded-md">
         <div>
           <img

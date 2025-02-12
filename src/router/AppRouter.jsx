@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/authentication/LoginPage";
 import LogoutPage from "../pages/authentication/LogoutPage";
 import RegisterPage from "../pages/authentication/RegisterPage";
+import ProfileDetail from "../pages/ProfileDetail";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/tweets/:id",
         element: <TweetDetail />,
+      },
+      {
+        path: "/user/:id",
+        element: <ProfileDetail />,
       },
     ],
   },

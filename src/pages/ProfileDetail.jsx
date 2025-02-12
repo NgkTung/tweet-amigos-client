@@ -1,14 +1,34 @@
-import { useNavigate } from "react-router-dom";
-import { useStore } from "../store";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "../api/user";
+import Loading from "../components/Loading";
+import { useEffect } from "react";
 
-const Profile = () => {
-  const { user } = useStore();
+const ProfileDetail = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1);
   };
+
+  const fetchUserById = async () => {
+    const data = await getUserById(id);
+    return data;
+  };
+
+  const {
+    data: user,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["userById", id],
+    queryFn: fetchUserById,
+  });
+
+  if (isPending) return <Loading />;
+  if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
     <div className="my-5">
@@ -51,4 +71,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileDetail;

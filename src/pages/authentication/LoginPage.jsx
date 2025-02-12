@@ -4,10 +4,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 import logo from "../../assets/main-logo.png";
 import constant from "../../constants";
+import Loading from "../../components/Loading";
 
 const LoginPage = () => {
   const EMAIL_REGEX = constant.emailRegex;
-  const { mutate: login, isLoading, error } = useSignin();
+  const { mutate: login, isLoading, isPending, error } = useSignin();
   const [helperText, setHelperText] = useState({
     email: "",
     password: "",
@@ -59,11 +60,19 @@ const LoginPage = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  useEffect(() => {
+    if (error) {
+      setHelperText({ ...alert, password: "Email or password is incorrect" });
+    }
+  }, [error]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
+      {(isLoading || isPending) && (
+        <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-50 flex items-center justify-center z-50">
+          <Loading type="spinningBubbles" />
+        </div>
+      )}
       <div className="flex flex-col items-center max-w-[600px] py-20 w-full shadow-lg rounded-md">
         <div>
           <img

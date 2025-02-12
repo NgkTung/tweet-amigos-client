@@ -6,6 +6,7 @@ import { getUser } from "../api/user";
 import { useStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import Loading from "../components/Loading";
 
 const MainLayout = () => {
   const { setUser } = useStore();
@@ -18,6 +19,7 @@ const MainLayout = () => {
   const {
     data: user,
     isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ["user"],
@@ -37,7 +39,7 @@ const MainLayout = () => {
     }
   }, [user, setUser, error]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading || isPending) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (

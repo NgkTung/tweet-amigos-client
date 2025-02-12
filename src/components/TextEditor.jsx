@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSmile } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa6";
 import { TiDelete } from "react-icons/ti";
 import EmojiPicker from "emoji-picker-react";
-import { createTweet } from "../api/tweet";
 import { useStore } from "../store";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
+import { useCreateTweet } from "../store/tweet";
+import Loading from "./Loading";
 
 const TextEditor = ({ retweetId, email }) => {
   const { showTextEditor, setShowTextEditor, user } = useStore();
@@ -14,6 +15,7 @@ const TextEditor = ({ retweetId, email }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const { mutate: createTweet, isPending, isSuccess } = useCreateTweet();
 
   const handleEmojiClick = (emojiObject) => {
     setContent((prevContent) => prevContent + emojiObject.emoji);
@@ -42,19 +44,24 @@ const TextEditor = ({ retweetId, email }) => {
     }
 
     try {
-      const data = await createTweet(formData);
-      if (data) {
-        setContent("");
-        setImage(null);
-        if (showTextEditor === true) {
-          setShowTextEditor(false);
-        }
-        toast.success("Tweet created");
-      }
+      createTweet(formData);
     } catch (error) {
       console.log(error.message);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setContent("");
+      setImage(null);
+      if (showTextEditor === true) {
+        setShowTextEditor(false);
+      }
+      toast.success("Tweet created");
+    }
+  }, [isSuccess]);
+
+  if (isPending) return <Loading />;
 
   return (
     <div className="px-4 py-6">
@@ -68,7 +75,7 @@ const TextEditor = ({ retweetId, email }) => {
             />
           )}
         </div>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 w-full">
           {retweetId && email && (
             <p className="text-gray-400">
               Replying to{" "}

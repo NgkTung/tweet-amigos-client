@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { getTweetById } from "../api/tweet";
 import { useQuery } from "@tanstack/react-query";
 import TweetButtons from "../components/tweet/TweetButtons";
@@ -33,6 +33,7 @@ const TweetDetail = () => {
   const {
     data: tweet,
     isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ["tweet", id, user.id],
@@ -44,25 +45,27 @@ const TweetDetail = () => {
     },
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isPending) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
     <div>
       <div className="py-6 px-4">
-        <div className="flex mb-4">
-          <div className="w-1/6">
-            <img
-              src={tweet.user.profile_image_url}
-              alt="profile image avatar"
-              className="profile-image-small"
-            />
+        <NavLink to={`/user/${tweet.user_id}`}>
+          <div className="flex mb-4">
+            <div className="w-1/6">
+              <img
+                src={tweet.user.profile_image_url}
+                alt="profile image avatar"
+                className="profile-image-small"
+              />
+            </div>
+            <div className="w-full">
+              <p className="font-bold text-[18px]">{tweet.user.username}</p>
+              <p className="text-gray-500 font-semibold">{tweet.user.email}</p>
+            </div>
           </div>
-          <div className="w-full">
-            <p className="font-bold text-[18px]">{tweet.user.username}</p>
-            <p className="text-gray-500 font-semibold">{tweet.user.email}</p>
-          </div>
-        </div>
+        </NavLink>
         {tweet.retweet_id && (
           <ReplyingTo retweetId={tweet.retweet_id} email={tweet.reply_to} />
         )}

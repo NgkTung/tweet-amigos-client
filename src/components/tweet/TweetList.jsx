@@ -27,12 +27,17 @@ const TweetList = () => {
 
   if (isLoading) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
+
+  const filteredTweets = tweetsResponse?.data.filter(
+    (tweet) => tweet.retweet_id === null
+  );
+
   return (
     <div>
-      {!tweetsResponse || tweetsResponse.data.length === 0 ? (
+      {filteredTweets.length === 0 ? (
         <p>No tweets available</p>
       ) : (
-        tweetsResponse.data.map((tweet) => (
+        filteredTweets.map((tweet) => (
           <div key={tweet.id}>
             <TweetListItem tweet={tweet} />
           </div>
