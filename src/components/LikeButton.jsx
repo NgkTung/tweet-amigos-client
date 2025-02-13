@@ -10,31 +10,12 @@ const LikeButton = ({ tweetId, isLiked, likesCount, setStatusCount }) => {
 
   const handleClick = () => {
     setLiked(!liked);
-    console.log(typeof likesCount);
     setStatusCount((prev) => ({
       ...prev,
       likesCount: liked ? likesCount - 1 : likesCount + 1,
     }));
     toggleLike({ tweetId, userId: user.id });
   };
-
-  //   const fetchLikingStatus = async (tweetId) => {
-  //     const data = await checkLikingStatus(tweetId, user.id);
-  //     return data.status;
-  //   };
-
-  //   const { mutate: likingStatusMutation } = useMutation({
-  //     mutationFn: (tweetId) => fetchLikingStatus(tweetId),
-  //     onSuccess: (data) => {
-  //       console.log("Data: ", data);
-  //       setLiked(data);
-  //     },
-  //     refetchOnWindowFocus: true,
-  //   });
-
-  //   useEffect(() => {
-  //     likingStatusMutation(tweetId);
-  //   }, [tweetId, user]);
 
   return (
     <div className="like-button" onClick={handleClick}>

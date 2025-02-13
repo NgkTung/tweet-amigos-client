@@ -41,7 +41,6 @@ const TweetDetail = () => {
     enabled: !!id,
     options: {
       staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: true,
     },
   });
 

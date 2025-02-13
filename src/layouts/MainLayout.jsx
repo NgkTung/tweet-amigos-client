@@ -18,15 +18,13 @@ const MainLayout = () => {
 
   const {
     data: user,
-    isLoading,
-    isPending,
+    isFetching,
     error,
   } = useQuery({
     queryKey: ["user"],
     queryFn: fetchUser,
     options: {
       staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: true,
     },
   });
 
@@ -39,7 +37,7 @@ const MainLayout = () => {
     }
   }, [user, setUser, error]);
 
-  if (isLoading || isPending) return <Loading />;
+  if (isFetching) return <Loading />;
   if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (

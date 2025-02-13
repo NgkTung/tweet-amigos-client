@@ -7,7 +7,7 @@ import { useStore } from "../store";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import { useCreateTweet } from "../store/tweet";
-import Loading from "./Loading";
+import { useQueryClient } from "@tanstack/react-query";
 
 const TextEditor = ({ retweetId, email }) => {
   const { showTextEditor, setShowTextEditor, user } = useStore();
@@ -15,7 +15,9 @@ const TextEditor = ({ retweetId, email }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const { mutate: createTweet, isPending, isSuccess } = useCreateTweet();
+  const { mutate: createTweet, isPending, isSuccess, error } = useCreateTweet();
+
+  const queryClient = useQueryClient();
 
   const handleEmojiClick = (emojiObject) => {
     setContent((prevContent) => prevContent + emojiObject.emoji);
@@ -58,10 +60,13 @@ const TextEditor = ({ retweetId, email }) => {
         setShowTextEditor(false);
       }
       toast.success("Tweet created");
+      queryClient.invalidateQueries("tweets");
     }
   }, [isSuccess]);
 
-  if (isPending) return <Loading />;
+  useEffect(() => {
+    if (error) toast.error("Failed when creating the tweet");
+  }, [error]);
 
   return (
     <div className="px-4 py-6">
@@ -128,10 +133,10 @@ const TextEditor = ({ retweetId, email }) => {
         </div>
         <button
           onClick={handleSubmit}
-          disabled={content.trim() === "" || content === null}
+          disabled={content.trim() === "" || content === null || isPending}
           className="bg-primary text-white rounded-full py-1 px-5 disabled:bg-gray-300 tracking-wider font-semibold"
         >
-          Post
+          {isPending ? "Posting" : "Post"}
         </button>
       </div>
       {showEmojiPicker && (
