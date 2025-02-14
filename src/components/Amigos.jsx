@@ -21,17 +21,21 @@ const Amigos = () => {
 
   if (isFetching) return <Loading />;
 
+  const listOfOtherAmigos = usersResponse.data.filter(
+    (user) => user.id !== currentUser.id
+  );
+
   return (
     <div>
-      {usersResponse.data && usersResponse.data.length === 0 ? (
+      {usersResponse.data && listOfOtherAmigos.length === 0 ? (
         <div>No users available</div>
       ) : (
         <div className="p-4">
           <p className="font-bold text-[2.2vh] mb-5">
-            <span className="text-primary">{usersResponse.data.length}</span>{" "}
-            Amigos:
+            <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
+            other Amigos are like you:
           </p>
-          {usersResponse.data.map((user) => (
+          {listOfOtherAmigos.map((user) => (
             <AmigosListItem key={user.id} user={user} />
           ))}
         </div>
