@@ -1,52 +1,16 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useStore } from "../../store";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "../api/user";
-import Loading from "../components/Loading";
+import { formatDate } from "../../utils";
 import { FaCalendarAlt } from "react-icons/fa";
-import { formatDate } from "../utils";
-import { useStore } from "../store";
-import { useEffect, useState } from "react";
-import { useToggleFollow } from "../store/user";
 
-const ProfileDetail = () => {
-  const { id } = useParams();
-  const { user: currentUser } = useStore();
-  const { mutate: toggleFollow, isPending: togglePending } = useToggleFollow();
-
-  const fetchUserById = async () => {
-    const data = await getUserById(id, currentUser.id);
-    return data;
-  };
-
-  const {
-    data: user,
-    isPending,
-    isSuccess,
-    error,
-  } = useQuery({
-    queryKey: ["userById", id, currentUser.id],
-    queryFn: fetchUserById,
-  });
-
-  const [isFollow, setIsFollow] = useState(false);
+const Profile = () => {
+  const { user } = useStore();
   const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1);
   };
-
-  const handleToggleFollow = () => {
-    setIsFollow(!isFollow);
-    toggleFollow({ userId: id, followerId: currentUser.id });
-  };
-
-  useEffect(() => {
-    if (isSuccess) setIsFollow(user.is_followed);
-  }, [isSuccess]);
-
-  if (isPending) return <Loading />;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
 
   return (
     <div className="my-5">
@@ -74,19 +38,15 @@ const ProfileDetail = () => {
                 className="profile-image-large"
               />
             </div>
-            {currentUser.id !== user.id && (
-              <button
-                className={`font-semibold rounded-full px-4 py-2 hover:brightness-125 transition-all border border-primary ${
-                  isFollow ? "bg-white text-primary" : "bg-primary text-white "
-                }`}
-                onClick={() => handleToggleFollow()}
-                disabled={togglePending}
-              >
-                {isFollow ? "Following" : "Follow"}
-              </button>
-            )}
+            <NavLink
+              to="/profile/edit"
+              className="bg-primary text-white font-semibold rounded-md px-4 py-2"
+            >
+              Edit profile
+            </NavLink>
           </div>
         </div>
+        {/* Display the username, email and biography */}
         <div className="px-4 mt-24">
           <p className="text-[20px] font-bold">{user.username}</p>
           <p className="text-gray-500 font-semibold">{user.email}</p>
@@ -113,4 +73,4 @@ const ProfileDetail = () => {
   );
 };
 
-export default ProfileDetail;
+export default Profile;

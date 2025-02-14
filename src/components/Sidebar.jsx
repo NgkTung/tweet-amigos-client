@@ -9,7 +9,6 @@ const Sidebar = () => {
 
   const fetchUsers = async () => {
     const data = await getUsers();
-    console.log(data);
     return data;
   };
 

@@ -23,9 +23,9 @@ const MainLayout = () => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: fetchUser,
-    options: {
-      staleTime: 5 * 60 * 1000,
-    },
+    // options: {
+    //   staleTime: 5 * 60 * 1000,
+    // },
   });
 
   useEffect(() => {

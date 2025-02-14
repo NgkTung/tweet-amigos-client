@@ -2,14 +2,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "../pages/ErrorPage";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
-import Profile from "../pages/Profile";
+import Profile from "../pages/Profile/Profile";
 import TweetDetail from "../pages/TweetDetail";
 import PrivateRoute from "./PrivateRoute";
 import LoginPage from "../pages/authentication/LoginPage";
 import LogoutPage from "../pages/authentication/LogoutPage";
 import RegisterPage from "../pages/authentication/RegisterPage";
-import ProfileDetail from "../pages/ProfileDetail";
+import ProfileDetail from "../pages/Profile/ProfileDetail";
 import Amigos from "../components/Amigos";
+import ProfileEdit from "../pages/Profile/ProfileEdit";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/user/:id",
         element: <ProfileDetail />,
+      },
+      {
+        path: "/profile/edit",
+        element: <ProfileEdit />,
       },
     ],
   },
