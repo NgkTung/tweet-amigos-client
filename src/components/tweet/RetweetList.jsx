@@ -24,7 +24,6 @@ const RetweetList = ({ tweetId }) => {
     enabled: !!tweetId,
     options: {
       staleTime: 5 * 60 * 1000,
-      refetchOnWindowFocus: true,
     },
   });
 

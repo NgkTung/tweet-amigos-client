@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { MdHome } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+import { FaUserGroup } from "react-icons/fa6";
 import { VscSignOut } from "react-icons/vsc";
 import logo from "../assets/main-logo.png";
 import { useStore } from "../store";
@@ -30,12 +30,12 @@ const Navbar = () => {
         </p>
         <p>
           <NavLink
-            to="/about"
+            to="/amigos"
             className={({ isActive }) =>
               isActive ? "text-primary nav-link" : "nav-link"
             }
           >
-            <BsFillInfoCircleFill /> About
+            <FaUserGroup /> Amigos
           </NavLink>
         </p>
         <p>
