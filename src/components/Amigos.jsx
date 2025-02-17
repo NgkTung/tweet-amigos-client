@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../api/user";
-import Loading from "./Loading";
 import { useStore } from "../store";
 import AmigosListItem from "./AmigosListItem";
+import { Skeleton } from "@mui/material";
 
 const Amigos = () => {
   const { user: currentUser } = useStore();
@@ -19,16 +19,40 @@ const Amigos = () => {
     },
   });
 
-  if (isFetching) return <Loading />;
-
-  const listOfOtherAmigos = usersResponse.data.filter(
-    (user) => user.id !== currentUser.id
-  );
+  const listOfOtherAmigos = usersResponse?.data
+    ? usersResponse.data.filter((user) => user.id !== currentUser.id)
+    : [];
 
   return (
     <div>
-      {usersResponse.data && listOfOtherAmigos.length === 0 ? (
-        <div>No users available</div>
+      {isFetching ? (
+        <div className="p-4">
+          <p className="font-bold text-[2.2vh] mb-5">
+            <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
+            other Amigos are like you:
+          </p>
+          {[...Array(6)].map((__, index) => (
+            <div
+              key={index}
+              className="flex items-center space-x-5 p-4 border-t"
+            >
+              <Skeleton
+                variant="circular"
+                animation="wave"
+                width={55}
+                height={55}
+              />
+              <div>
+                <Skeleton
+                  width={index % 2 === 1 ? 200 : 250}
+                  height={30}
+                  animation="wave"
+                />
+                <Skeleton width={150} height={20} animation="wave" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <div className="p-4">
           <p className="font-bold text-[2.2vh] mb-5">
