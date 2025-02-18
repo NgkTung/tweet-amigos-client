@@ -6,7 +6,11 @@ export default {
       colors: {
         primary: "#649dad",
       },
+      fontFamily: {
+        daruma: ["Darumadrop One", "sans-serif"],
+      },
     },
   },
+  darkMode: "selector",
   plugins: [],
 };

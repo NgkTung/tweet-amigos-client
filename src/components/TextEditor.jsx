@@ -92,9 +92,9 @@ const TextEditor = ({ retweetId, email }) => {
             value={content}
             onChange={handleTextChange}
             placeholder="What's happening?"
-            className="text-[18px] w-full focus:outline-none whitespace-pre-wrap"
+            className="text-[18px] w-full focus:outline-none whitespace-pre-wrap p-2 dark:bg-[#111] dark:text-white transition-colors"
             rows={4}
-          ></textarea>
+          />
         </div>
       </div>
       {imagePreview && (
@@ -115,13 +115,13 @@ const TextEditor = ({ retweetId, email }) => {
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             className="p-2 hover:bg-primary rounded-full cursor-pointer transition"
           >
-            <FaSmile />
+            <FaSmile className="dark:text-white" />
           </button>
           <label
             htmlFor="image-upload"
             className="p-2 hover:bg-primary rounded-full cursor-pointer transition"
           >
-            <FaRegImage />
+            <FaRegImage className="dark:text-white" />
             <input
               type="file"
               id="image-upload"

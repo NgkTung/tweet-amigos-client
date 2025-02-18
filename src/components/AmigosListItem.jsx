@@ -22,7 +22,7 @@ const AmigosListItem = ({ user }) => {
   return (
     <NavLink
       to={`/user/${user.id}`}
-      className="flex items-center space-x-5 p-4 border-t bg-white hover:brightness-95 transition-all"
+      className="flex items-center space-x-5 p-4 border-t bg-white hover:brightness-95 transition-all dark:bg-[#111] dark:hover:bg-[#444]"
     >
       <div className="w-[80px]">
         <img
@@ -32,12 +32,12 @@ const AmigosListItem = ({ user }) => {
         />
       </div>
       <div className="w-full">
-        <p className="font-bold">{user.username}</p>
+        <p className="font-bold dark:text-white">{user.username}</p>
         <p className="font-semibold text-gray-500">{user.email}</p>
       </div>
       <button
         className={`font-semibold self-end rounded-full px-4 py-2 hover:brightness-125 transition-all border border-primary ${
-          isFollowed ? "bg-white text-primary" : "bg-primary text-white "
+          isFollowed ? "text-primary" : "bg-primary text-white "
         }`}
         onClick={(e) => handleToggleFollow(e)}
         disabled={isPending}

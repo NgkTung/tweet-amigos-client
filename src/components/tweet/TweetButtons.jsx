@@ -20,7 +20,7 @@ const TweetButtons = ({ tweetId, isLiked, retweetCount, likesCount }) => {
   }, [retweetCount, likesCount]);
 
   return (
-    <div className="flex w-full justify-start items-center mt-5 space-x-24 px-8 pb-4">
+    <div className="flex w-full justify-start items-center mt-5 space-x-24 px-8 pb-4 dark:text-white">
       <button className="flex items-center">
         <BiMessageRounded size={20} />{" "}
         <span className="ms-1">{statusCount.retweetCount}</span>

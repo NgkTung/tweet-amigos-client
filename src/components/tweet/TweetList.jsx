@@ -39,7 +39,7 @@ const TweetList = () => {
       {isFetching ? (
         <div>
           {[...Array(6)].map((_, index) => (
-            <div className="border-b" key={index}>
+            <div className="border-b dark:bg-[#444]" key={index}>
               <div className="flex py-4 px-4 space-x-5">
                 <div className="w-1/6">
                   <Skeleton

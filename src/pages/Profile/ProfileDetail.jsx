@@ -52,11 +52,13 @@ const ProfileDetail = () => {
     <div className="my-5">
       <div className="flex space-x-5 mb-4">
         <button onClick={handleBack} className="p-4">
-          <IoMdArrowRoundBack size={20} />
+          <IoMdArrowRoundBack size={20} className="dark:text-white" />
         </button>
         <div>
-          <p className="text-[18px] font-bold">{user.username}</p>
-          <p className="text-gray-500 font-semibold">
+          <p className="text-[18px] font-bold dark:text-white">
+            {user.username}
+          </p>
+          <p className="text-gray-500 font-semibold dark:text-white">
             {user.tweet_count} Tweets
           </p>
         </div>
@@ -77,7 +79,7 @@ const ProfileDetail = () => {
             {currentUser.id !== user.id && (
               <button
                 className={`font-semibold rounded-full px-4 py-2 hover:brightness-125 transition-all border border-primary ${
-                  isFollow ? "bg-white text-primary" : "bg-primary text-white "
+                  isFollow ? "text-primary" : "bg-primary text-white "
                 }`}
                 onClick={() => handleToggleFollow()}
                 disabled={togglePending}
@@ -88,7 +90,9 @@ const ProfileDetail = () => {
           </div>
         </div>
         <div className="px-4 mt-24">
-          <p className="text-[20px] font-bold">{user.username}</p>
+          <p className="text-[20px] font-bold dark:text-white">
+            {user.username}
+          </p>
           <p className="text-gray-500 font-semibold">{user.email}</p>
           <p className="mt-4">{user.bio}</p>
         </div>
@@ -100,11 +104,15 @@ const ProfileDetail = () => {
         {/* Display the number of follwers and following */}
         <div className="flex px-4 mt-5 space-x-4">
           <p className="text-gray-500 font-semibold">
-            <span className="text-black text-bold">{user.following_count}</span>{" "}
+            <span className="text-black text-bold dark:text-white">
+              {user.following_count}
+            </span>{" "}
             Following
           </p>
           <p className="text-gray-500 font-semibold">
-            <span className="text-black text-bold">{user.follower_count}</span>{" "}
+            <span className="text-black text-bold dark:text-white">
+              {user.follower_count}
+            </span>{" "}
             {user.follower_count > 1 ? "Followers" : "Follower"}
           </p>
         </div>

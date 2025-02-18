@@ -60,7 +60,9 @@ const TweetDetail = () => {
               />
             </div>
             <div className="w-full">
-              <p className="font-bold text-[18px]">{tweet.user.username}</p>
+              <p className="font-bold text-[18px] dark:text-white">
+                {tweet.user.username}
+              </p>
               <p className="text-gray-500 font-semibold">{tweet.user.email}</p>
             </div>
           </div>
@@ -68,7 +70,9 @@ const TweetDetail = () => {
         {tweet.retweet_id && (
           <ReplyingTo retweetId={tweet.retweet_id} email={tweet.reply_to} />
         )}
-        <div>{renderTextWithLineBreaks(tweet.content)}</div>
+        <div className="dark:text-white">
+          {renderTextWithLineBreaks(tweet.content)}
+        </div>
         {tweet.image_url && (
           <img
             src={tweet.image_url}

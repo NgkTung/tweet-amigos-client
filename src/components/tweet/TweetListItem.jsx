@@ -25,7 +25,7 @@ const TweetListItem = ({ tweet }) => {
   return (
     <div className="border-b">
       <div
-        className="flex py-4 px-4  hover:bg-slate-50 cursor-pointer"
+        className="flex py-4 px-4  hover:bg-slate-50 cursor-pointer dark:text-white dark:hover:bg-slate-800 transition-all"
         onClick={openTweetDetail}
       >
         <div className="w-1/6">
@@ -40,6 +40,7 @@ const TweetListItem = ({ tweet }) => {
             <span className="font-bold">{username}</span>{" "}
             <span className="font-semibold text-gray-500">{email}</span>
           </p>
+          {}
           {tweet.retweet_id && (
             <ReplyingTo retweetId={tweet.retweet_id} email={tweet.reply_to} />
           )}

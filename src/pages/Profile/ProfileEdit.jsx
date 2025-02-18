@@ -102,7 +102,9 @@ const ProfileEdit = () => {
 
   return (
     <div className="my-8">
-      <p className="font-bold px-4 text-[2vh] mb-10">Edit profile:</p>
+      <p className="font-bold px-4 text-[2vh] mb-10 dark:text-white">
+        Edit profile:
+      </p>
       <div>
         <div
           className="relative h-[200px] bg-no-repeat bg-cover"
@@ -166,36 +168,43 @@ const ProfileEdit = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-6 mt-28 px-4">
-        <TextField
-          label="Username"
-          value={formData.username}
-          onChange={(e) => handleChange(e, "username")}
-          fullWidth
-          size="small"
-        />
-        <TextField
-          label="Email"
-          value={formData.email}
-          fullWidth
-          size="small"
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
-          className="bg-gray-200"
-        />
-        <TextField
-          label="Biography"
-          value={formData.bio}
-          onChange={(e) => handleChange(e, "bio")}
-          fullWidth
-          size="small"
-          multiline
-          rows={4}
-          placeholder="What would you like to show to everyone?"
-        />
+      <div className="flex flex-col space-y-4 mt-24 px-4">
+        <div className="input-group">
+          <label htmlFor="username-edit-input" className="font-semibold">
+            Username
+          </label>
+          <input
+            id="username-edit-input"
+            label="Username"
+            value={formData.username}
+            onChange={(e) => handleChange(e, "username")}
+            className="edit-input"
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="email-edit-input" className="font-semibold">
+            Email
+          </label>
+          <input
+            id="email-edit-input"
+            label="Email"
+            value={formData.email}
+            className="bg-gray-200 edit-input"
+            readOnly
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="bio-edit-input">Biography</label>
+          <textarea
+            id="bio-edit-input"
+            label="Biography"
+            value={formData.bio}
+            onChange={(e) => handleChange(e, "bio")}
+            rows={4}
+            placeholder="What would you like to show to everyone?"
+            className="edit-input"
+          />
+        </div>
       </div>
       <button
         className={`font-semibold mx-4 py-2 px-6 mt-4 border border-primary rounded-md transition-all ${

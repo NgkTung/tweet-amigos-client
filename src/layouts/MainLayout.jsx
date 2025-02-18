@@ -38,16 +38,21 @@ const MainLayout = () => {
   }, [user, setUser, error]);
 
   if (isFetching) return <Loading />;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  if (error)
+    return (
+      <p className="text-red-500 dark:bg-white p-4">Error: {error.message}</p>
+    );
 
   return (
-    <div className="flex flex-row min-h-screen max-w-[1200px] mx-auto">
-      <Navbar />
-      <main className="border-x-2 border-primary w-full">
-        <Outlet />
-        <PostTweet />
-      </main>
-      <Sidebar />
+    <div className="dark:bg-[#111] w-full min-h-screen transition-colors">
+      <div className="flex flex-row min-h-screen max-w-[1200px] mx-auto">
+        <Navbar />
+        <main className="border-x-2 border-primary w-full">
+          <Outlet />
+          <PostTweet />
+        </main>
+        <Sidebar />
+      </div>
     </div>
   );
 };

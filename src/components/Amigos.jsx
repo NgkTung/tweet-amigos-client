@@ -27,14 +27,14 @@ const Amigos = () => {
     <div>
       {isFetching ? (
         <div className="p-4">
-          <p className="font-bold text-[2.2vh] mb-5">
+          <p className="font-bold text-[2.2vh] mb-5 dark:text-white">
             <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
             other Amigos are like you:
           </p>
           {[...Array(6)].map((__, index) => (
             <div
               key={index}
-              className="flex items-center space-x-5 p-4 border-t"
+              className="flex items-center space-x-5 p-4 border-t dark:bg-[#444]"
             >
               <Skeleton
                 variant="circular"
@@ -55,7 +55,7 @@ const Amigos = () => {
         </div>
       ) : (
         <div className="p-4">
-          <p className="font-bold text-[2.2vh] mb-5">
+          <p className="font-bold text-[2.2vh] mb-5 dark:text-white">
             <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
             other Amigos are like you:
           </p>

@@ -29,15 +29,17 @@ const Sidebar = () => {
 
   return (
     <div className="w-6/12 py-5 px-4">
-      <div className="bg-gray-100 rounded-md p-4">
-        <p className="text-[1.8vh] font-semibold mb-5">Who to follow:</p>
+      <div className="bg-gray-100 rounded-md p-4 dark:bg-[#222]">
+        <p className="text-[1.8vh] font-semibold mb-5 dark:text-white">
+          Who to follow:
+        </p>
         {isPending ? (
           // Display loading skeleton if data is still loading
           <div>
             {[...Array(3)].map((_, index) => (
               <div
                 key={index}
-                className="flex items-center space-x-4 py-3 px-2 bg-white hover:brightness-90 transition-all"
+                className="flex items-center space-x-4 py-3 px-2 bg-white hover:brightness-90 transition-all dark:bg-[#444]"
               >
                 <div className="w-1/4">
                   <Skeleton
@@ -61,7 +63,7 @@ const Sidebar = () => {
           // Display top followers
           topFollowers.map((user) => (
             <NavLink key={user.id} to={`/user/${user.id}`}>
-              <div className="flex items-center space-x-4 py-3 px-2 bg-white hover:brightness-90 transition-all">
+              <div className="flex items-center space-x-4 py-3 px-2 bg-white hover:brightness-90 transition-all dark:bg-[#444]">
                 <div>
                   <img
                     src={user.profile_image_url}
@@ -70,7 +72,7 @@ const Sidebar = () => {
                   />
                 </div>
                 <div>
-                  <p className="font-bold">{user.username}</p>
+                  <p className="font-bold dark:text-white">{user.username}</p>
                   <p className="text-gray-500 font-semibold">{user.email}</p>
                 </div>
               </div>

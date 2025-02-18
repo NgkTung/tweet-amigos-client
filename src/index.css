@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 * {
   font-family: "Open Sans", sans-serif;
@@ -59,13 +62,22 @@ textarea {
 }
 
 @layer components {
+  .logo {
+    @apply text-center text-[2.8vh] font-bold bg-primary mx-5 rounded-md pt-1 pb-3 text-white font-daruma;
+  }
   .nav-link {
-    @apply text-[22px] font-bold flex gap-x-4 items-center px-10;
+    @apply text-[22px] font-bold flex gap-x-4 items-center mx-10;
   }
   .profile-image-small {
     @apply rounded-full object-cover w-[55px] h-[55px] border;
   }
   .profile-image-large {
     @apply rounded-full object-cover w-[150px] h-[150px] border-4 border-white;
+  }
+  .input-group {
+    @apply flex flex-col space-y-2 dark:text-white;
+  }
+  .edit-input {
+    @apply border border-gray-300 p-2 rounded-md dark:bg-[#111] dark:read-only:bg-[#444];
   }
 }
