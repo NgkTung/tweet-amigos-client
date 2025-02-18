@@ -1,38 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTweets } from "../../api/tweet";
+import PropTypes from "prop-types";
 import TweetListItem from "./TweetListItem";
-import { useStore } from "../../store";
 import { Skeleton } from "@mui/material";
 
-const TweetList = () => {
-  const { user } = useStore();
-
-  // Fetch Tweets
-  const fetchTweets = async () => {
-    const data = await getTweets(user?.id, 1, 10);
-    return data;
-  };
-
-  // useQuery hook
-  const {
-    data: tweetsResponse,
-    isFetching,
-    error,
-  } = useQuery({
-    queryKey: ["tweets", user.id], // Make sure to use the correct query key
-    queryFn: fetchTweets,
-    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
-    refetchOnReconnect: true, // Refetch on reconnect (for network issues)
-  });
-
-  // Loading and error handling
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
-
-  // Filter tweets without retweets
-  const filteredTweets = tweetsResponse?.data
-    ? tweetsResponse?.data.filter((tweet) => tweet.retweet_id === null)
-    : [];
-
+const TweetList = ({ tweets, isFetching }) => {
   // Render the tweets
   return (
     <div className="mb-20">
@@ -84,7 +54,7 @@ const TweetList = () => {
           ))}
         </div>
       ) : (
-        filteredTweets.map((tweet) => (
+        tweets.map((tweet) => (
           <div key={tweet.id}>
             <TweetListItem tweet={tweet} />
           </div>
@@ -92,6 +62,11 @@ const TweetList = () => {
       )}
     </div>
   );
+};
+
+TweetList.propTypes = {
+  tweets: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default TweetList;

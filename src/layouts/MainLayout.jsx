@@ -44,12 +44,12 @@ const MainLayout = () => {
     );
 
   return (
-    <div className="dark:bg-[#111] w-full min-h-screen transition-colors">
+    <div className="dark:bg-[#111] w-full min-h-screen transition-colors relative">
+      <PostTweet />
       <div className="flex flex-row min-h-screen max-w-[1200px] mx-auto">
         <Navbar />
         <main className="border-x-2 border-primary w-full">
           <Outlet />
-          <PostTweet />
         </main>
         <Sidebar />
       </div>

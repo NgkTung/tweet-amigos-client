@@ -8,14 +8,24 @@ import { formatDate } from "../../utils";
 import { useStore } from "../../store";
 import { useEffect, useState } from "react";
 import { useToggleFollow } from "../../store/user";
+import TabPanel from "../../components/TabPanel";
+import TweetList from "../../components/tweet/TweetList";
+import { Tab, Tabs } from "@mui/material";
+import { getTweetsByUserId } from "../../api/tweet";
 
 const ProfileDetail = () => {
   const { id } = useParams();
   const { user: currentUser } = useStore();
   const { mutate: toggleFollow, isPending: togglePending } = useToggleFollow();
+  const [value, setValue] = useState(0);
 
   const fetchUserById = async () => {
     const data = await getUserById(id, currentUser.id);
+    return data;
+  };
+
+  const fetchTweetsByUserId = async () => {
+    const data = await getTweetsByUserId(id);
     return data;
   };
 
@@ -23,10 +33,19 @@ const ProfileDetail = () => {
     data: user,
     isPending,
     isSuccess,
-    error,
+    error: userError,
   } = useQuery({
     queryKey: ["userById", id, currentUser.id],
     queryFn: fetchUserById,
+  });
+
+  const {
+    data: tweetsResponse,
+    isFetching,
+    error: tweetsError,
+  } = useQuery({
+    queryKey: ["get-tweets-by-user-id", id],
+    queryFn: fetchTweetsByUserId,
   });
 
   const [isFollow, setIsFollow] = useState(false);
@@ -41,12 +60,23 @@ const ProfileDetail = () => {
     toggleFollow({ userId: id, followerId: currentUser.id });
   };
 
+  const handleChange = (e, newValue) => {
+    setValue(newValue);
+  };
+
   useEffect(() => {
     if (isSuccess) setIsFollow(user.is_followed);
   }, [isSuccess]);
 
   if (isPending) return <Loading />;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  if (userError || tweetsError)
+    return (
+      <p className="text-red-500">
+        Error: {userError.message || tweets.message}
+      </p>
+    );
+
+  const tweets = tweetsResponse?.data ? tweetsResponse.data : [];
 
   return (
     <div className="my-5">
@@ -116,6 +146,22 @@ const ProfileDetail = () => {
             {user.follower_count > 1 ? "Followers" : "Follower"}
           </p>
         </div>
+      </div>
+      <div className="mt-5">
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Tweets" />
+          <Tab label="Followers" />
+          <Tab label="Following" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <TweetList tweets={tweets} isFetching={isFetching} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Followers
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Following
+        </TabPanel>
       </div>
     </div>
   );

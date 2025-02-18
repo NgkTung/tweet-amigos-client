@@ -3,14 +3,46 @@ import { useStore } from "../../store";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { formatDate } from "../../utils";
 import { FaCalendarAlt } from "react-icons/fa";
+import { Tab, Tabs } from "@mui/material";
+import TabPanel from "../../components/TabPanel";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getTweetsByUserId } from "../../api/tweet";
+import TweetList from "../../components/tweet/TweetList";
 
 const Profile = () => {
   const { user } = useStore();
   const navigate = useNavigate();
+  const [value, setValue] = useState(0);
 
   const handleBack = () => {
     navigate(-1);
   };
+
+  const handleChange = (e, newValue) => {
+    setValue(newValue);
+  };
+
+  const fetchTweetsByUserId = async () => {
+    const data = await getTweetsByUserId(user.id);
+    return data;
+  };
+
+  const {
+    data: tweetsResponse,
+    isFetching,
+    error,
+  } = useQuery({
+    queryKey: ["get-tweets-by-user-id", user.id],
+    queryFn: fetchTweetsByUserId,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
+  });
+
+  // Loading and error handling
+  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+
+  const tweets = tweetsResponse?.data ? tweetsResponse.data : [];
 
   return (
     <div className="my-5">
@@ -74,6 +106,22 @@ const Profile = () => {
             {user.follower_count > 1 ? "Followers" : "Follower"}
           </p>
         </div>
+      </div>
+      <div className="mt-5">
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Your Tweets" />
+          <Tab label="Followers" />
+          <Tab label="Following" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <TweetList tweets={tweets} isFetching={isFetching} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Followers
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Following
+        </TabPanel>
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import { MdHome } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { VscSignOut } from "react-icons/vsc";
-import logo from "../assets/main-logo.png";
 import { useStore } from "../store";
 import { useEffect, useState } from "react";
 import { FaRegSun } from "react-icons/fa6";

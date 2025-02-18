@@ -3,13 +3,9 @@ import axios from "axios";
 
 const { API_URL } = config;
 
-export async function getTweets(userId, page, pageSize) {
+export async function getTweets(params) {
   const response = await axios.get(`${API_URL}/tweets`, {
-    params: {
-      user_id: userId,
-      page,
-      page_size: pageSize,
-    },
+    params,
   });
   return response.data;
 }
@@ -17,6 +13,16 @@ export async function getTweets(userId, page, pageSize) {
 export async function getTweetById(tweetId, userId) {
   const response = await axios.get(`${API_URL}/tweets/${tweetId}`, {
     params: { user_id: userId },
+  });
+  return response.data;
+}
+
+export async function getTweetsByUserId(userId, page, pageSize) {
+  const response = await axios.get(`${API_URL}/user/${userId}/tweets`, {
+    params: {
+      page,
+      page_size: pageSize,
+    },
   });
   return response.data;
 }
