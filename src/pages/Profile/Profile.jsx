@@ -9,6 +9,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTweetsByUserId } from "../../api/tweet";
 import TweetList from "../../components/tweet/TweetList";
+import { getFollowersByUserId, getFollowingsByUserId } from "../../api/user";
+import Amigos from "../../components/Amigos";
 
 const Profile = () => {
   const { user } = useStore();
@@ -28,21 +30,64 @@ const Profile = () => {
     return data;
   };
 
+  const fetchFollowers = async () => {
+    const data = await getFollowersByUserId(user.id);
+    return data;
+  };
+
+  const fetchFollowings = async () => {
+    const data = await getFollowingsByUserId(user.id);
+    return data;
+  };
+
   const {
     data: tweetsResponse,
-    isFetching,
-    error,
+    isFetching: isTweetFetching,
+    error: tweetsError,
   } = useQuery({
     queryKey: ["get-tweets-by-user-id", user.id],
     queryFn: fetchTweetsByUserId,
+    enabled: !!user.id,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
+  });
+
+  const {
+    data: followersResponse,
+    isFetching: isFollowerFetching,
+    error: followerError,
+  } = useQuery({
+    queryKey: ["get-followers-by-user-id", user.id],
+    queryFn: fetchFollowers,
+    enabled: !!user.id,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
+  });
+
+  const {
+    data: followingsResponse,
+    isFetching: isFollowingFetching,
+    error: followingError,
+  } = useQuery({
+    queryKey: ["get-followings-by-user-id", user.id],
+    queryFn: fetchFollowings,
+    enabled: !!user.id,
     staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
     refetchOnReconnect: true,
   });
 
   // Loading and error handling
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  if (tweetsError || followerError || followingError)
+    return (
+      <p className="text-red-500">
+        Error:{" "}
+        {tweetsError.message || followerError.message || followingError.message}
+      </p>
+    );
 
   const tweets = tweetsResponse?.data ? tweetsResponse.data : [];
+  const followers = followersResponse?.data ? followersResponse.data : [];
+  const followings = followingsResponse?.data ? followingsResponse.data : [];
 
   return (
     <div className="my-5">
@@ -108,19 +153,24 @@ const Profile = () => {
         </div>
       </div>
       <div className="mt-5">
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="inherit"
+          className="text-primary"
+        >
           <Tab label="Your Tweets" />
           <Tab label="Followers" />
           <Tab label="Following" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <TweetList tweets={tweets} isFetching={isFetching} />
+          <TweetList tweets={tweets} isFetching={isTweetFetching} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Followers
+          <Amigos data={followers} isFetching={isFollowerFetching} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Following
+          <Amigos data={followings} isFetching={isFollowingFetching} />
         </TabPanel>
       </div>
     </div>

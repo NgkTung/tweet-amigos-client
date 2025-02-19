@@ -1,7 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "../../api/user";
+import {
+  getFollowersByUserId,
+  getFollowingsByUserId,
+  getUserById,
+} from "../../api/user";
 import Loading from "../../components/Loading";
 import { FaCalendarAlt } from "react-icons/fa";
 import { formatDate } from "../../utils";
@@ -12,6 +16,7 @@ import TabPanel from "../../components/TabPanel";
 import TweetList from "../../components/tweet/TweetList";
 import { Tab, Tabs } from "@mui/material";
 import { getTweetsByUserId } from "../../api/tweet";
+import Amigos from "../../components/Amigos";
 
 const ProfileDetail = () => {
   const { id } = useParams();
@@ -29,6 +34,16 @@ const ProfileDetail = () => {
     return data;
   };
 
+  const fetchFollowers = async () => {
+    const data = await getFollowersByUserId(id);
+    return data;
+  };
+
+  const fetchFollowings = async () => {
+    const data = await getFollowingsByUserId(id);
+    return data;
+  };
+
   const {
     data: user,
     isPending,
@@ -37,15 +52,43 @@ const ProfileDetail = () => {
   } = useQuery({
     queryKey: ["userById", id, currentUser.id],
     queryFn: fetchUserById,
+    enabled: !!currentUser.id,
   });
 
   const {
     data: tweetsResponse,
-    isFetching,
+    isFetching: isTweetFetching,
     error: tweetsError,
   } = useQuery({
     queryKey: ["get-tweets-by-user-id", id],
     queryFn: fetchTweetsByUserId,
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
+  });
+
+  const {
+    data: followersResponse,
+    isFetching: isFollowerFetching,
+    error: followerError,
+  } = useQuery({
+    queryKey: ["get-followers-by-user-id", id],
+    queryFn: fetchFollowers,
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
+  });
+
+  const {
+    data: followingsResponse,
+    isFetching: isFollowingFetching,
+    error: followingError,
+  } = useQuery({
+    queryKey: ["get-followings-by-user-id", id],
+    queryFn: fetchFollowings,
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // Set a 5-minute stale time
+    refetchOnReconnect: true,
   });
 
   const [isFollow, setIsFollow] = useState(false);
@@ -69,14 +112,20 @@ const ProfileDetail = () => {
   }, [isSuccess]);
 
   if (isPending) return <Loading />;
-  if (userError || tweetsError)
+  if (userError || tweetsError || followerError || followingError)
     return (
       <p className="text-red-500">
-        Error: {userError.message || tweets.message}
+        Error:{" "}
+        {userError.message ||
+          tweets.message ||
+          followerError.message ||
+          followingError}
       </p>
     );
 
   const tweets = tweetsResponse?.data ? tweetsResponse.data : [];
+  const followers = followersResponse?.data ? followersResponse.data : [];
+  const followings = followingsResponse?.data ? followingsResponse.data : [];
 
   return (
     <div className="my-5">
@@ -148,19 +197,24 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className="mt-5">
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="inherit"
+          className="text-primary"
+        >
           <Tab label="Tweets" />
           <Tab label="Followers" />
           <Tab label="Following" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <TweetList tweets={tweets} isFetching={isFetching} />
+          <TweetList tweets={tweets} isFetching={isTweetFetching} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Followers
+          <Amigos data={followers} isFetching={isFollowerFetching} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Following
+          <Amigos data={followings} isFetching={isFollowingFetching} />
         </TabPanel>
       </div>
     </div>

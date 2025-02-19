@@ -1,40 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "../api/user";
-import { useStore } from "../store";
 import AmigosListItem from "./AmigosListItem";
 import { Skeleton } from "@mui/material";
+import PropTypes from "prop-types";
 
-const Amigos = () => {
-  const { user: currentUser } = useStore();
-
-  const fetchUsers = async () => {
-    const data = await getUsers(currentUser.id);
-    return data;
-  };
-  const { data: usersResponse, isFetching } = useQuery({
-    queryKey: ["get-users", currentUser.id],
-    queryFn: fetchUsers,
-    options: {
-      staleTime: 5 * 60 * 1000,
-    },
-  });
-
-  const listOfOtherAmigos = usersResponse?.data
-    ? usersResponse.data.filter((user) => user.id !== currentUser.id)
-    : [];
-
+const Amigos = ({ data, isFetching, followBtn = false }) => {
   return (
     <div>
       {isFetching ? (
-        <div className="p-4">
-          <p className="font-bold text-[2.2vh] mb-5 dark:text-white">
-            <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
-            other Amigos are like you:
-          </p>
+        <div>
           {[...Array(6)].map((__, index) => (
             <div
               key={index}
-              className="flex items-center space-x-5 p-4 border-t dark:bg-[#444]"
+              className="flex items-center space-x-5 p-4 border-b dark:bg-[#444]"
             >
               <Skeleton
                 variant="circular"
@@ -54,18 +30,30 @@ const Amigos = () => {
           ))}
         </div>
       ) : (
-        <div className="p-4">
-          <p className="font-bold text-[2.2vh] mb-5 dark:text-white">
-            <span className="text-primary">{listOfOtherAmigos.length}</span>{" "}
-            other Amigos are like you:
-          </p>
-          {listOfOtherAmigos.map((user) => (
-            <AmigosListItem key={user.id} user={user} />
-          ))}
+        <div>
+          {data.length === 0 ? (
+            <></>
+          ) : (
+            <>
+              {data.map((user) => (
+                <AmigosListItem
+                  key={user.id}
+                  user={user}
+                  followBtn={followBtn}
+                />
+              ))}
+            </>
+          )}
         </div>
       )}
     </div>
   );
+};
+
+Amigos.propTypes = {
+  data: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  followBtn: PropTypes.bool,
 };
 
 export default Amigos;

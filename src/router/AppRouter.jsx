@@ -9,8 +9,8 @@ import LoginPage from "../pages/authentication/LoginPage";
 import LogoutPage from "../pages/authentication/LogoutPage";
 import RegisterPage from "../pages/authentication/RegisterPage";
 import ProfileDetail from "../pages/Profile/ProfileDetail";
-import Amigos from "../components/Amigos";
 import ProfileEdit from "../pages/Profile/ProfileEdit";
+import ListOfAmigos from "../pages/ListOfAmigos";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/amigos",
-        element: <Amigos />,
+        element: <ListOfAmigos />,
       },
       {
         path: "/profile",

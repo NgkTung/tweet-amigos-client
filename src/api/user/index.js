@@ -31,6 +31,20 @@ export const getUserById = async (userId, followerId) => {
   return response.data;
 };
 
+export const getFollowersByUserId = async (userId, params) => {
+  const response = await axios.get(`${API_URL}/user/${userId}/followers`, {
+    params,
+  });
+  return response.data;
+};
+
+export const getFollowingsByUserId = async (userId, params) => {
+  const response = await axios.get(`${API_URL}/user/${userId}/followings`, {
+    params,
+  });
+  return response.data;
+};
+
 export const updateUser = async (userId, formData) => {
   const response = await axios.put(
     `${API_URL}/user/${userId}`,
