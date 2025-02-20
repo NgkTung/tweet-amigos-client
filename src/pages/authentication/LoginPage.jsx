@@ -67,13 +67,13 @@ const LoginPage = () => {
   }, [error]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen ">
       {(isLoading || isPending) && (
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-50 flex items-center justify-center z-50">
           <Loading type="spinningBubbles" />
         </div>
       )}
-      <div className="flex flex-col items-center max-w-[600px] py-20 w-full shadow-lg rounded-md">
+      <div className="flex flex-col items-center max-w-[600px] py-20 w-full shadow-lg rounded-md border">
         <div>
           <img
             src={logo}
@@ -81,7 +81,7 @@ const LoginPage = () => {
             className="w-[250px] h-[60px] mb-10 object-cover"
           />
         </div>
-        <h2 className="text-[24px] font-bold tracking-wider">Login</h2>
+        <h2 className="text-[24px] font-bold tracking-wider ">Login</h2>
         <TextField
           label="Email"
           variant="standard"

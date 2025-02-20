@@ -60,7 +60,11 @@ const TextEditor = ({ retweetId, email }) => {
         setShowTextEditor(false);
       }
       toast.success("Tweet created");
-      queryClient.invalidateQueries("tweets");
+      if (retweetId) {
+        queryClient.invalidateQueries("get-retweets");
+      } else {
+        queryClient.invalidateQueries("tweets");
+      }
     }
   }, [isSuccess]);
 

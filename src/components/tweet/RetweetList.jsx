@@ -19,7 +19,7 @@ const RetweetList = ({ tweetId }) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["retweets", tweetId, user.id],
+    queryKey: ["get-retweets", tweetId, user.id],
     queryFn: fetchRetweets,
     enabled: !!tweetId,
     options: {

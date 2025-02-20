@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { toggleLikeTweet, createTweet } from "../../api/tweet";
+import { toggleLikeTweet, createTweet, deleteTweet } from "../../api/tweet";
 
 const useToggleLike = () => {
   return useMutation({
@@ -13,4 +13,10 @@ const useCreateTweet = () => {
   });
 };
 
-export { useToggleLike, useCreateTweet };
+const useDeleteTweet = () => {
+  return useMutation({
+    mutationFn: (tweetId) => deleteTweet(tweetId),
+  });
+};
+
+export { useToggleLike, useCreateTweet, useDeleteTweet };

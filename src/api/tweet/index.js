@@ -66,3 +66,8 @@ export async function checkLikingStatus(tweetId, userId) {
   );
   return response.data;
 }
+
+export async function deleteTweet(tweetId) {
+  const response = await axios.delete(`${API_URL}/tweets/${tweetId}`);
+  return response.data;
+}

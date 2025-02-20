@@ -120,6 +120,7 @@ const RegisterPage = () => {
           className="max-w-[400px]"
           helperText={helperText.email}
           error={helperText.email !== ""}
+          required
         />
         <TextField
           label="Username"
@@ -133,6 +134,7 @@ const RegisterPage = () => {
           }}
           helperText={helperText.username}
           error={helperText.username !== ""}
+          required
         />
         <TextField
           label="Password"
@@ -149,6 +151,7 @@ const RegisterPage = () => {
           error={
             helperText.password !== "" || helperText.confirmPassword !== ""
           }
+          required
         />
         <TextField
           label="Confirm Password"
@@ -163,6 +166,7 @@ const RegisterPage = () => {
           type="password"
           helperText={helperText.confirmPassword}
           error={helperText.confirmPassword !== ""}
+          required
         />
         <div className="w-full flex justify-end max-w-[400px]">
           <p className="mt-5">
